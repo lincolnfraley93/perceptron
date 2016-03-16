@@ -11,7 +11,7 @@ public class Perceptron {
 	private Trainer[] trainers;
 	private int bias = 1;
 	private float bias_weight;
-	private float learning_constant = 0.01f;
+	private float learning_constant = 0.0001f;
 	private int num_of_inputs;
 
 	public Perceptron(int[] vector) {
@@ -126,7 +126,12 @@ public class Perceptron {
 	}
 
  	public static void main(String[] args) {
-		int[] coefficients = {1, 1};
+ 		int[] coefficients = new int[10];
+ 		Random rand = new Random();
+ 		for (int i = 0; i < 10; i++) {
+ 			coefficients[i] = rand.nextInt((10 - (-10)) + 1) + (-10);
+ 		}
+ 		
 		Perceptron ptron = new Perceptron(coefficients);
 
 		ptron.train();
