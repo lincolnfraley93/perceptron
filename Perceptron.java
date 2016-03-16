@@ -7,29 +7,26 @@ import java.util.Random;
 
 public class Perceptron {
 	private float[] weights;
-	private int[] vector;
+	private int[] inputs;
 	private Trainer[] trainers;
 	private int bias = 1;
 	private float bias_weight;
 	private float learning_constant = 0.0001f;
 	private int num_of_inputs;
 
-	public Perceptron(int[] vector) {
-		num_of_inputs = vector.length;
-		this.vector = vector;
+	public Perceptron(int[] inputs) {
+		num_of_inputs = inputs.length;
+		this.inputs = inputs;
 
 		weights = new float[num_of_inputs];
 		create_weights(weights);
 
 		trainers = new Trainer[100];
 		create_trainers(trainers);
-
-		Random rand = new Random();
-		bias_weight = rand.nextFloat() * (1 - (-1)) + (-1);
 	}
 
 	/*
-	 * Create weight for each of the n inputs using random number
+	 * Create weight for each of the n inputs and bias using random number
 	 * generator.
 	 */
 	private void create_weights(float[] weights) {
@@ -37,6 +34,7 @@ public class Perceptron {
 		for (int i = 0; i < weights.length; i++) {
 			weights[i] = rand.nextFloat() * (1 - (-1)) + (-1);
 		}
+		bias_weight = rand.nextFloat() * (1 - (-1)) + (-1);
 	}
 
 	/*
@@ -45,10 +43,9 @@ public class Perceptron {
 	private void create_trainers(Trainer[] trainer) {
 		Random rand = new Random();
 		int output, known_answer;
-
 		for (int i = 0; i < trainer.length; i++) {
 			trainer[i] = new Trainer(num_of_inputs);
-			output = dot_product(trainer[i].get_inputs(), vector) + bias;
+			output = dot_product(trainer[i].get_inputs(), inputs) + bias;
 			known_answer = (output >= 0) ? 1 : -1;
 			trainer[i].set_answer(known_answer);
 		}
@@ -68,9 +65,8 @@ public class Perceptron {
 				output = feed_forward(trainers[i]);
 
 				if (output != known_answer) {
-					error = known_answer;
+					error = (known_answer - output);
 					adjust_weights(trainers[i], error);
-					bias_weight+=bias * error * learning_constant;
 					misclassifications++;
 				}
 			}
@@ -82,7 +78,7 @@ public class Perceptron {
 				done = true;
 			}
 		}
-		System.out.println("Number of iterations to classify data: " + iterations);
+		System.out.format("Number of iterations to classify data: %d%n", iterations);
 	}
 
 	/* Given trainer input, produces output using sign function */
@@ -99,10 +95,10 @@ public class Perceptron {
 	/* Adjusts weights for misclassified inputs */
 	public void adjust_weights(Trainer trainer, int error) {
 		int[] inputs = trainer.get_inputs();
-
 		for (int i = 0; i < weights.length; i++) {
 			weights[i]+=inputs[i] * error * learning_constant;
 		}
+		bias_weight+=bias * error * learning_constant;
 	}
 
 	/* Dot product method used on vector and trainer input arrays */
