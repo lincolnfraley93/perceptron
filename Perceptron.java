@@ -104,7 +104,6 @@ public class Perceptron {
 	/* Dot product method used on vector and trainer input arrays */
 	private int dot_product(int[] array1, int[] array2) {
 		int sum = 0;
-
 		for (int i = 0; i < array1.length; i++) {
 			sum+=array1[i] * array2[i];
 		}
@@ -114,7 +113,6 @@ public class Perceptron {
 	/* Dot product method used in weight adjustment calculation */
 	private float dot_product(int[] array1, float[] array2) {
 		float sum = 0;
-
 		for (int i = 0; i < array1.length; i++) {
 			sum+=array1[i] * array2[i];
 		}
