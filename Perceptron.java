@@ -125,37 +125,10 @@ public class Perceptron {
 		return sum;
 	}
 
-	/* Test method for weights array */
-	public void print_weights() {
-		for (int i = 0; i < num_of_inputs; i++) {
-			System.out.println(weights[i]);
-		}
-	}
-
-	/* Test method for trainers array */
-	public void print_trainers() {
-		int[] trainer_inputs;
-		for (int i = 0; i < trainers.length; i++) {
-			trainer_inputs = trainers[i].get_inputs();
-			for (int j = 0; j < num_of_inputs; j++) {
-				System.out.format("Trainer %d, input %d: %d%n", i, j, trainer_inputs[j]);
-			}
-			System.out.format("Trainer %d known answer: %d%n", i, trainers[i].get_answer());
-			System.out.println();
-		}
-	}
-
  	public static void main(String[] args) {
 		int[] coefficients = {1, 1};
 		Perceptron ptron = new Perceptron(coefficients);
 
-		//  Test weights
-		ptron.print_weights();
-
-		//  Test trainers
-		ptron.print_trainers();
-
-		// Test train method
 		ptron.train();
 	}
 
